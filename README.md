@@ -14,11 +14,11 @@ Model:
 {
   id: string,
   name: string,
-  position: string (Striker, Midfielder, Defender, Goalkeeper),
+  position: string,
   dateOfBirth: date,
   country: string,
-  era: string (e.g., "1980s-1990s"),
-  teams: array of strings (team names),
+  era: string,
+  teams: array of strings,
   goals: number,
   appearances: number,
   assists: number
@@ -53,11 +53,11 @@ Endpoints:
 Model:
 {
   id: string,
-  name: string,
-  country: string,
-  founded: date,
+  playerId: string,
+  inductionYear: number,
+  category: string,
   achievements: array of strings,
-  players: number of player
+  description: string
 }
 
 Endpoints:
