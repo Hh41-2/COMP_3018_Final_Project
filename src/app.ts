@@ -1,5 +1,7 @@
 import express, { Express } from "express";
 import healthRoute from "./api/v1/routes/healthRoute";
+import hofRoute from "./api/v1/routes/hofRoute";
+
 
 // Initialize Express application
 const app: Express = express();
@@ -10,5 +12,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1", healthRoute);
+app.use("/api/v1", hofRoute);
+
 
 export default app;
