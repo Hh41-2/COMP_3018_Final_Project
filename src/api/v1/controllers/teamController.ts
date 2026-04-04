@@ -9,7 +9,7 @@ export const getAllTeam = (req: Request, res: Response) => {
 };
 
 export const getTeam = (req: Request, res: Response) => {
-       res.status(HTTP_STATUS.OK).json({message: teamService.getTeam()}
+       res.status(HTTP_STATUS.OK).json({}
        );
 };
 
