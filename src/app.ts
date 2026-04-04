@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import healthRoute from "./api/v1/routes/healthRoute";
 
 // Initialize Express application
 const app: Express = express();
@@ -7,5 +8,7 @@ const app: Express = express();
 app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
+
+app.use("/api/v1", healthRoute);
 
 export default app;
