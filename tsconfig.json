@@ -15,7 +15,7 @@
         "noUnusedLocals": true,
         "alwaysStrict": true,
         "baseUrl": "./",
-        "types": ["node"],
+        "types": ["node","jest"],
         "paths": {
             "*": ["*"]
         }
