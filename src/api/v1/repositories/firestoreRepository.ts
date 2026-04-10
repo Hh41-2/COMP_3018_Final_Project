@@ -2,23 +2,6 @@ import { db } from "../../../config/firebaseConfig";
 
 
 /**
- * Executes a series of operations within a Firestore transaction.
- * @param {(transaction: FirebaseFirestore.Transaction) => Promise<T>} operations - Function containing the operations to perform within the transaction.
- * @returns {Promise<T>} - The result of the transaction.
- */
-export const runTransaction = async <T>(
-    operations: (transaction: FirebaseFirestore.Transaction) => Promise<T>
-): Promise<T> => {
-    try {
-        return await db.runTransaction(operations);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
-        throw new Error(`Transaction failed: ${errorMessage}`);
-    }
-};
-
-/**
  * Creates a new document in a specified Firestore collection.
  * @param {string} collectionName - The name of the collection.
  * @param {Partial<T>} data - The data for the new document.
@@ -26,20 +9,28 @@ export const runTransaction = async <T>(
  */
 export const createDocument = async <T>(
     collectionName: string,
-    data: Partial<T>,
-    id?: string
-): Promise<string> => {
-    try {
-        let docRef: FirebaseFirestore.DocumentReference;
+    data: Partial<T>
+): Promise<T> => {
+    try {       
+        let idNumber = 1;
+        let id: string = collectionName + "_" + idNumber;
+        
+        let docRef = db.collection(collectionName).doc(id);
 
-        if (id) {
+        while((await docRef.get()).exists){
+            idNumber++;
+            id = collectionName + "_" + idNumber;
             docRef = db.collection(collectionName).doc(id);
-            await docRef.set(data);
-        } else {
-            docRef = await db.collection(collectionName).add(data);
         }
 
-        return docRef.id;
+        let newData = {
+            id: id,
+            ...data
+        }
+
+        await docRef.set(newData);
+        
+        return newData as T;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -104,9 +95,13 @@ export const updateDocument = async <T>(
     collectionName: string,
     id: string,
     data: Partial<T>
-): Promise<void> => {
+): Promise<T> => {
     try {
         await db.collection(collectionName).doc(id).update(data);
+
+        const updatedData = await db.collection(collectionName).doc(id).get();
+
+        return updatedData.data() as T;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -126,18 +121,15 @@ export const updateDocument = async <T>(
  */
 export const deleteDocument = async (
     collectionName: string,
-    id: string,
-    transaction?: FirebaseFirestore.Transaction
-): Promise<void> => {
+    id: string
+): Promise<string> => {
     try {
         const docRef: FirebaseFirestore.DocumentReference = db
             .collection(collectionName)
             .doc(id);
-        if (transaction) {
-            transaction.delete(docRef);
-        } else {
-            await docRef.delete();
-        }
+        
+        await docRef.delete();
+        return id;
     } catch (error: unknown) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
