@@ -1,46 +1,57 @@
-// import { Player } from "../models/playerModel";
-// import * as firestoreRepository from "../repositories/firestoreRepository";
+import { Player } from "../models/playerModel";
+import * as firestoreRepository from "../repositories/firestoreRepository";
 
+const PLAYER_COLLECTION = "players";
 /**
  * Retrieves all the players in the database
  * @returns returns a list of player
  */
-export const getAllPlayer = (): string => {
-       return "getAllHallOfFame";
+export const getAllPlayer = async (): Promise<Player[]> => {
+       const allPlayer = await firestoreRepository.getDocuments(PLAYER_COLLECTION);
+
+       return allPlayer.docs.map(doc => doc.data() as Player);
 } 
 
 /**
  * Retrieves the player in the database by id
  * @param id - Unique identifier for player
- * @returns returns the player with a specified id
+ * @returns returns the player with a specified id or null if a player not found
  */
-export const getPlayer = (): string => {
-       return "testing getPlayer";
+export const getPlayer = async (id: string): Promise<Player | null> => {
+       const getSinglePlayer = await firestoreRepository.getDocumentById(PLAYER_COLLECTION, id);
+
+       return getSinglePlayer ? getSinglePlayer.data() as Player : null;
 } 
 
 /**
  * Creates the player in the database
- * @param 
+ * @param id - Unique identifier for player
  * @returns returns the created player
  */
-export const createPlayer = async () => {
-       return "createPlayer";
+export const createPlayer = async (player: Player): Promise<Player> => {
+       const createPlayer: Player = await firestoreRepository.createDocument(PLAYER_COLLECTION, player);
+       
+       return createPlayer;
 } 
 
 /**
- * Updatess the player in the database by id
+ * Updates the player in the database by id
  * @param id - Unique identifier for player
  * @returns returns the updated player
  */
-export const updatePlayer = async () => {
-       return "updatePlayer";
+export const updatePlayer = async (id: string, player: Partial<Player>): Promise<Player> => {
+       const updatePlayer: Player = await firestoreRepository.updateDocument(PLAYER_COLLECTION, id, player);
+       
+       return updatePlayer;
 } 
 
 /**
  * Deletes the player in the database by id
  * @param id - Unique identifier for the player
- * 
+ * @returns returns the deleted player's id
  */
-export const deletePlayer = async () => {
-       return "deletePlayer";
+export const deletePlayer = async (id: string): Promise<string> => {
+       const deletePlayer: string = await firestoreRepository.deleteDocument(PLAYER_COLLECTION, id);
+       
+       return deletePlayer;
 } 

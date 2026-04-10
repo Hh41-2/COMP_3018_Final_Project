@@ -1,28 +1,73 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { HTTP_STATUS } from "../../../constants/httpConstant";
 import * as playerService from "../services/playerService";
+import { successResponse } from "../models/responseModel";
+import { Player } from "../models/playerModel";
 
-export const getAllPlayer = (req: Request, res: Response) => {
-       res.status(HTTP_STATUS.OK).json({message: playerService.getAllPlayer()}
-       );
+export const getAllPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+       try{
+              const getAllPlayer: Player[] = await playerService.getAllPlayer();
+              res.status(HTTP_STATUS.OK).json({
+                     message: "Retrieved all players",
+                     totalPlayers: getAllPlayer.length,
+                     data: getAllPlayer 
+              });
+       } catch (error: unknown) {
+              next(error);
+       }
 };
 
-export const getPlayer = (req: Request, res: Response) => {
-       res.status(HTTP_STATUS.OK).json({message: playerService.getPlayer()}
-       );
+export const getPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+       try{
+              const getPlayerById: Player | null = await playerService.getPlayer(req.params.id as string);
+              if(getPlayerById === null){
+                     res.status(HTTP_STATUS.BAD_REQUEST).json({message:"Player not found"});
+              } 
+              res.status(HTTP_STATUS.OK).json(successResponse(
+                     `Retrieved player with ${req.params.id}`,
+                     getPlayerById
+              ));
+              
+       } catch (error: unknown) {
+              next(error);
+       }
+       
 };
 
-export const createPlayer = (req: Request, res: Response) => {
-       res.status(HTTP_STATUS.OK).json({message: playerService.createPlayer()}
-       );
+export const createPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+       try{
+              const createPlayer: Player = await playerService.createPlayer(req.body);
+
+              res.status(HTTP_STATUS.CREATED).json(successResponse(
+                     "Player created",
+                     createPlayer
+              ));
+       } catch (error: unknown) {
+              next(error);
+       }
 };
 
-export const updatePlayer = (req: Request, res: Response) => {
-       res.status(HTTP_STATUS.OK).json({message: playerService.updatePlayer()}
-       );
+export const updatePlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+       try{
+              const updatePlayer: Player = await playerService.updatePlayer(req.params.id as string,req.body);
+
+              res.status(HTTP_STATUS.OK).json(successResponse(
+                     "Player updated",
+                     updatePlayer
+              ));
+       } catch (error: unknown) {
+              next(error);
+       }
 };
 
-export const deletePlayer = (req: Request, res: Response) => {
-       res.status(HTTP_STATUS.OK).json({message: playerService.deletePlayer()}
-       );
+export const deletePlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+       try{
+              const deletePlayer: string = await playerService.deletePlayer(req.params.id as string);
+
+              res.status(HTTP_STATUS.OK).json(successResponse(
+                     deletePlayer
+              ));
+       } catch (error: unknown) {
+              next(error);
+       }
 };
