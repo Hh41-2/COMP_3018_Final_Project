@@ -20,10 +20,8 @@ export interface ApiResponse<T> {
  */
 export const successResponse = <T>(
     message?: string /** A message providing additional information about the response. */,
-    count?: number /** A number representing the total length of the list of teams, players and hof. */,
     data?: T /** The data to include in the response. */
 ): ApiResponse<T> => ({
     message,
-    count,
     data
 });
