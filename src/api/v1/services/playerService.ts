@@ -28,7 +28,7 @@ export const getPlayer = async (id: string): Promise<Player | null> => {
  * @param id - Unique identifier for player
  * @returns returns the created player
  */
-export const createPlayer = async (player: Player): Promise<Player> => {
+export const createPlayer = async (player: Partial<Player>): Promise<Player> => {
        const createPlayer: Player = await firestoreRepository.createDocument(PLAYER_COLLECTION, player);
        
        return createPlayer;

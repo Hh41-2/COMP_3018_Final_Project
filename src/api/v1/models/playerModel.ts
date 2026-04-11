@@ -14,6 +14,7 @@
  *         - goals
  *         - appearances
  *         - assists
+ *         - achievements
  *       properties:
  *         id:
  *           type: string
@@ -40,18 +41,24 @@
  *         teams:
  *           type: array
  *           minItems: 1 
- *           description: List of teams a player has played for
+ *           description: The list of teams a player has played for
  *           items:
  *             type: string
  *         goals:
  *           type: number 
- *           description: Total number of goals scored by the player
+ *           description: The total number of goals scored by the player
  *         appearances:
  *           type: number
- *           description: Total number of appearances made by the player 
+ *           description: The total number of appearances made by the player 
  *         assists:
  *           type: number
  *           description: The total number of assists by the player
+ *         achievements:
+ *           type: array
+ *           minItems: 3 
+ *           description: The list of achievements by the player
+ *           items:
+ *             type: string
  */
 
 export interface Player {
@@ -65,4 +72,5 @@ export interface Player {
        goals: number, // Total number of goals scored by the player 
        appearances: number, // Total number of appearances made by the player 
        assists: number // The total number of assists by the player 
+       achievements: string[] // The list of achievements by the player
 }

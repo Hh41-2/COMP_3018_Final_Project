@@ -24,7 +24,7 @@ export const getPlayer = async (req: Request, res: Response, next: NextFunction)
                      res.status(HTTP_STATUS.BAD_REQUEST).json({message:"Player not found"});
               } 
               res.status(HTTP_STATUS.OK).json(successResponse(
-                     `Retrieved player with ${req.params.id}`,
+                     `Retrieved player with id: ${req.params.id}`,
                      getPlayerById
               ));
               
@@ -65,7 +65,7 @@ export const deletePlayer = async (req: Request, res: Response, next: NextFuncti
               const deletePlayer: string = await playerService.deletePlayer(req.params.id as string);
 
               res.status(HTTP_STATUS.OK).json(successResponse(
-                     deletePlayer
+                     `Delete player with id: ${deletePlayer}`
               ));
        } catch (error: unknown) {
               next(error);
