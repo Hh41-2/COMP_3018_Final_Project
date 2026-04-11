@@ -9,7 +9,7 @@ import hofRoute from "./api/v1/routes/hofRoute";
 import playerRoute from "./api/v1/routes/playerRoute";
 import teamRoute from "./api/v1/routes/teamRoute";
 import setupSwagger from "./config/swagger";
-
+import multerRoute from "./api/v1/routes/multerRoute"
 
 // Initialize Express application
 const app: Express = express();
@@ -26,6 +26,7 @@ app.use("/api/v1", healthRoute);
 app.use("/api/v1", hofRoute);
 app.use("/api/v1", playerRoute);
 app.use("/api/v1", teamRoute);
+app.use("/api", multerRoute);
 
 // Setup Swagger
 setupSwagger(app);
