@@ -9,6 +9,6 @@ const upload = multer ({ storage : fileStorage});
 
 const router: Router = express.Router();
 
-router.post("/uploads",upload.single('file'), fileUpload);
+router.post("/uploads",upload.single('image'), fileUpload);
 
 export default router;

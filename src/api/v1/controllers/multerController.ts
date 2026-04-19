@@ -9,11 +9,11 @@ import { successResponse } from "../models/responseModel";
  */
 export const fileUpload = (req: Request, res: Response) => {
        if(!req.file) {
-              return res.status(HTTP_STATUS.BAD_REQUEST).json(successResponse("No file uploaded"));
+              return res.status(HTTP_STATUS.BAD_REQUEST).json(successResponse("No image uploaded"));
        };
        
        res.status(HTTP_STATUS.OK).json(successResponse(
-              "File uploaded successfully",
+              "Image uploaded successfully",
               req.file
        ));
 };
