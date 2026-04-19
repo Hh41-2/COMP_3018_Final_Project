@@ -25,3 +25,38 @@ export const successResponse = <T>(
     message,
     data
 });
+
+/**
+ * Creates a standardized error response object.
+ * This ensures all API errors follow the same format for consistent client handling.
+ *
+ * @param {string} message - The error message to display to the client.
+ * @param {string} code - The error code for programmatic handling.
+ * @returns {object} A formatted error response object.
+ */
+export const errorResponse = (message: string, code: string) => ({
+    success: false,
+    error: {
+        message,
+        code,
+    },
+    timestamp: new Date().toISOString(),
+});
+
+/**
+ * Creates a user response object.
+ * This returns a formatted user information.
+ *
+ * @param {string} role - The role of the user.
+ * @param {string} email - The user email to sign-in with.
+ * @param {string} password - The user password to sign-in with.
+ * @param {string} localNum - The assigned number for each role.
+ * @returns {object} A formatted user response object.
+ */
+export const userResponse = (role: string, email: string, password: string, localNum: string) => ({
+    idToken: `${role}-token-${password}`,
+    email: email,
+    localId: `${role}-uid-${localNum}`,
+    expiresIn: 3600,
+    refreshToken: "mock-refresh-token"
+});
