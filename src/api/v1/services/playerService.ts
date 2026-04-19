@@ -2,6 +2,7 @@ import { Player } from "../models/playerModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
 
 const PLAYER_COLLECTION = "players";
+
 /**
  * Retrieves all the players in the database
  * @returns returns a list of player
@@ -25,7 +26,7 @@ export const getPlayer = async (id: string): Promise<Player | null> => {
 
 /**
  * Creates the player in the database
- * @param id - Unique identifier for player
+ * @param player: Partial<Player> - Required fields without id for player
  * @returns returns the created player
  */
 export const createPlayer = async (player: Partial<Player>): Promise<Player> => {
@@ -37,6 +38,7 @@ export const createPlayer = async (player: Partial<Player>): Promise<Player> => 
 /**
  * Updates the player in the database by id
  * @param id - Unique identifier for player
+ * @param player: Partial<Player> - Required fields without id for player
  * @returns returns the updated player
  */
 export const updatePlayer = async (id: string, player: Partial<Player>): Promise<Player> => {

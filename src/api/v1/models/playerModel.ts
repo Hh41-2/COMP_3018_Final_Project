@@ -55,10 +55,12 @@
  *           description: The total number of assists by the player
  *         achievements:
  *           type: array
- *           minItems: 3 
  *           description: The list of achievements by the player
  *           items:
  *             type: string
+ *         image:
+ *           type: string
+ *           description: The path for player image 
  */
 
 export interface Player {
@@ -73,4 +75,5 @@ export interface Player {
        appearances: number, // Total number of appearances made by the player 
        assists: number // The total number of assists by the player 
        achievements: string[] // The list of achievements by the player
+       image?: string // The path for the player image
 }
