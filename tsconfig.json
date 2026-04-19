@@ -15,10 +15,11 @@
         "noUnusedLocals": true,
         "alwaysStrict": true,
         "baseUrl": "./",
+        "types": ["node","jest","multer"],
         "paths": {
             "*": ["*"]
         }
     },
-    "include": ["src/**/*", "test/**/*", "config/**/*"],
+    "include": ["src/**/*", "test/**/*", "config/**/*", "jest.setup.ts"],
     "exclude": ["node_modules", "dist"]
 }

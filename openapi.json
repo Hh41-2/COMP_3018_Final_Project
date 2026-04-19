@@ -1,0 +1,1166 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Task Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "player": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "Goalkeeper",
+              "Defender",
+              "Midfielder",
+              "Striker"
+            ]
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "era": {
+            "type": "string"
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "goals": {
+            "type": "number"
+          },
+          "appearances": {
+            "type": "number"
+          },
+          "assists": {
+            "type": "number"
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "hof": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "inductionYear": {
+            "type": "integer"
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "league": {
+            "type": "string"
+          },
+          "founded": {
+            "type": "integer"
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "players": {
+            "type": "integer"
+          }
+        }
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Retrieve health check information",
+        "tags": [
+          "Health"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved health Check information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "uptime": {
+                      "type": "integer",
+                      "example": 12.4408936
+                    },
+                    "timestamp": {
+                      "type": "integer",
+                      "example": "2026-04-04T21:10:59.941Z"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "1.0.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hof": {
+      "get": {
+        "summary": "Retrieve a list of hall of fame entry",
+        "tags": [
+          "HOF"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all hall of fame entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Retrieved hall of fame entry"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/hof"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hof/:id": {
+      "get": {
+        "summary": "Retrieve a hall of fame entry",
+        "tags": [
+          "HOF"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the hall of fame entry"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a hall of fame entry with Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Retrieved a hall of fame entry"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/hof"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hall of fame entry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a hall of fame entry",
+        "tags": [
+          "HOF"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the player"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully created a Hall of fame entry with given information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/hof"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a hall of fame entry",
+        "tags": [
+          "HOF"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the hall of fame entry"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "inductionYear": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "achievements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 3
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "image": {
+                    "type": "string",
+                    "description": "The image path/URL of the player"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the hall of fame entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/hof"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hall of fame entry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a hall of Fame entry",
+        "tags": [
+          "HOF"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the plyaer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted a hall of fame entry with Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Removed a hall of Fame entry with id: hof_1"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/hof"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/players": {
+      "get": {
+        "summary": "Retrieve a list of players",
+        "tags": [
+          "Player"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all players",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Retrieved players"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/player"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new player",
+        "tags": [
+          "Player"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "position",
+                  "dateOfBirth",
+                  "country",
+                  "era",
+                  "teams",
+                  "goals",
+                  "appearances",
+                  "assists",
+                  "achievements"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the player"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "Goalkeeper",
+                      "Defender",
+                      "Midfielder",
+                      "Striker"
+                    ],
+                    "description": "The position played by the player"
+                  },
+                  "dateOfBirth": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 10,
+                    "description": "The date of birth of the player (YYYY-MM-DD)"
+                  },
+                  "country": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The country the player is from"
+                  },
+                  "era": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The era/period when the player was active"
+                  },
+                  "teams": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "The list of teams a player has played for"
+                  },
+                  "goals": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The total number of goals scored by the player"
+                  },
+                  "appearances": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The total number of appearances made by the player"
+                  },
+                  "assists": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The total number of assists by the player"
+                  },
+                  "achievements": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "The list of achievements by the player"
+                  },
+                  "image": {
+                    "type": "string",
+                    "description": "The path for player image"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a new player",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/player"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/players/:id": {
+      "get": {
+        "summary": "Retrieve a player",
+        "tags": [
+          "Player"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the plyaer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a player with Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Retrieved a player"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/player"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Hall of fame entry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a player",
+        "tags": [
+          "Player"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the player"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the player"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "Goalkeeper",
+                      "Defender",
+                      "Midfielder",
+                      "Striker"
+                    ],
+                    "description": "The position played by the player"
+                  },
+                  "dateOfBirth": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 10,
+                    "description": "The date of birth of the player (YYYY-MM-DD)"
+                  },
+                  "country": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The country the player is from"
+                  },
+                  "era": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The era/period when the player was active"
+                  },
+                  "teams": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "The list of teams a player has played for"
+                  },
+                  "goals": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The total number of goals scored by the player"
+                  },
+                  "appearances": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The total number of appearances made by the player"
+                  },
+                  "assists": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "The total number of assists by the player"
+                  },
+                  "achievements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "The list of achievements by the player"
+                  },
+                  "image": {
+                    "type": "string",
+                    "description": "The path for player image"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the player",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/player"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Player not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a player",
+        "tags": [
+          "Player"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the plyaer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted a player with Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deleted a player"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/player"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "summary": "Retrieve a list of all teams",
+        "tags": [
+          "Team"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all teams",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Retrieved all teams"
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/team"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new team",
+        "tags": [
+          "Team"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "league",
+                  "founded",
+                  "achievements",
+                  "players"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the team"
+                  },
+                  "league": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The league the team plays in"
+                  },
+                  "founded": {
+                    "type": "integer",
+                    "minimum": 1800,
+                    "description": "The year the team was founded"
+                  },
+                  "achievements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of major achievements"
+                  },
+                  "players": {
+                    "type": "integer",
+                    "minimum": 11,
+                    "maximum": 30,
+                    "description": "Total number of players on the team"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a new team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/team"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/:id": {
+      "get": {
+        "summary": "Retrieve a team",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the team"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Retrieved a team"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/team"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a team",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the team"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the team"
+                  },
+                  "league": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The league the team plays in"
+                  },
+                  "founded": {
+                    "type": "integer",
+                    "minimum": 1800,
+                    "description": "The year the team was founded"
+                  },
+                  "achievements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of major achievements"
+                  },
+                  "players": {
+                    "type": "integer",
+                    "minimum": 11,
+                    "maximum": 30,
+                    "description": "Total number of players on the team"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/team"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a team",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the team"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the team",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Removed team with id: team_1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Team not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
