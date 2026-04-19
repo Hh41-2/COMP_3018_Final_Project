@@ -116,7 +116,6 @@ export const updateDocument = async <T>(
  * Can operate within a transaction if provided, otherwise performs a direct delete.
  * @param {string} collectionName - The name of the collection.
  * @param {string} id - The ID of the document to delete.
- * @param {FirebaseFirestore.Transaction} [transaction] - Optional Firestore transaction.
  * @returns {Promise<void>}
  */
 export const deleteDocument = async (
