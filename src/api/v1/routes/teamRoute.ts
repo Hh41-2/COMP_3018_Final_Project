@@ -69,7 +69,7 @@ router.get("/teams",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.get("/teams/:id",
        authenticate,
@@ -135,7 +135,7 @@ router.get("/teams/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.post("/teams",
        authenticate,
@@ -201,13 +201,13 @@ router.post("/teams",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  *       '404':
  *         description: Team not found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.put("/teams/:id",
        authenticate,
@@ -245,7 +245,7 @@ router.put("/teams/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.delete("/teams/:id",
        authenticate,

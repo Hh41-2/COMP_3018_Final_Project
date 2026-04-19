@@ -34,7 +34,7 @@ const router: Router = express.Router();
  *                 events:
  *                   type: array
  *                   items:
- *                     $ref:'#/components/schemas/hof'
+ *                     $ref: '#/components/schemas/hof'
  */ 
 router.get("/hof", 
        authenticate,
@@ -74,7 +74,7 @@ router.get("/hof",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.get("/hof/:id",
        authenticate,
@@ -112,7 +112,7 @@ router.get("/hof/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.post("/hof/:id",
        authenticate,
@@ -173,13 +173,13 @@ router.post("/hof/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  *       '404':
  *         description: Hall of fame entry not found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.put("/hof/:id",
        authenticate,
@@ -221,7 +221,7 @@ router.put("/hof/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.delete("/hof/:id",
        authenticate,

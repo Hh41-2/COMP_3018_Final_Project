@@ -33,7 +33,7 @@ const router: Router = express.Router();
  *                 events:
  *                   type: array
  *                   items:
- *                     $ref:'#/components/schemas/player'
+ *                     $ref: '#/components/schemas/player'
  */
 router.get("/players", 
        authenticate,
@@ -72,7 +72,7 @@ router.get("/players",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.get("/players/:id",
        authenticate,
@@ -171,7 +171,7 @@ router.get("/players/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.post("/players",
        authenticate,
@@ -264,13 +264,13 @@ router.post("/players",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  *       '404':
  *         description: Player not found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.put("/players/:id",
        authenticate,
@@ -310,7 +310,7 @@ router.put("/players/:id",
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/error'
  */
 router.delete("/players/:id",
        authenticate,

@@ -23,6 +23,54 @@ const swaggerOptions: swaggerJsdoc.Options = {
                     bearerFormat: "JWT",
                 },
             },
+            schemas: {
+                player: {
+                    type: "object",
+                    properties: {
+                        id: { type: "string" },
+                        name: { type: "string" },
+                        position: { type: "string", enum: ["Goalkeeper", "Defender", "Midfielder", "Striker"] },
+                        dateOfBirth: { type: "string" },
+                        country: { type: "string" },
+                        era: { type: "string" },
+                        teams: { type: "array", items: { type: "string" } },
+                        goals: { type: "number" },
+                        appearances: { type: "number" },
+                        assists: { type: "number" },
+                        achievements: { type: "array", items: { type: "string" } },
+                        image: { type: "string" }
+                    }
+                },
+                hof: {
+                    type: "object",
+                    properties: {
+                        id: { type: "string" },
+                        name: { type: "string" },
+                        inductionYear: { type: "integer" },
+                        achievements: { type: "array", items: { type: "string" } },
+                        description: { type: "string" },
+                        image: { type: "string" }
+                    }
+                },
+                team: {
+                    type: "object",
+                    properties: {
+                        id: { type: "string" },
+                        name: { type: "string" },
+                        league: { type: "string" },
+                        founded: { type: "integer" },
+                        achievements: { type: "array", items: { type: "string" } },
+                        players: { type: "integer" }
+                    }
+                },
+                error: {
+                    type: "object",
+                    properties: {
+                        message: { type: "string" },
+                        code: { type: "string" }
+                    }
+                }
+            }
         },
         security: [
             {
